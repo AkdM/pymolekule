@@ -34,6 +34,15 @@ def stealth_email(email: str = None):
     return None
 
 
+def extract_region(identity_id: str = None):
+    if identity_id:
+        pattern = r"^[^:]+"
+        s = re.search(pattern, identity_id)
+        if s:
+            return s.group(0)
+    return None
+
+
 def make_configuration(endpoint: str, security_token: str, aws_access_key_id: str, aws_secret_key: str, goal_region: str, lang: str = 'fr'):
     now = datetime.utcnow()
     amzdate = now.strftime('%Y%m%dT%H%M%SZ')

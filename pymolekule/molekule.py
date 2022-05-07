@@ -10,7 +10,12 @@ import boto3
 from loguru import logger
 from pycognito.aws_srp import AWSSRP
 
-from ._internal_utils import make_configuration, create_access, stealth_email
+from ._internal_utils import (
+    make_configuration,
+    create_access,
+    stealth_email,
+    extract_region
+)
 
 
 @logger.catch
@@ -64,6 +69,10 @@ class Molekule:
             # Save JWT token for further use
             self.tokens['jwt'] = molekule_authentication_response.get(
                 'openIdToken')
+            goal_region = extract_region(
+                molekule_authentication_response.get('profile').get('identityId'))
+
+            # print(molekule_authentication_response)
 
             # 3. Make configuration from AWS using execute-api service
             aws_configuration = make_configuration(
@@ -74,7 +83,7 @@ class Molekule:
                     'credentials').get('AccessKeyId'),
                 aws_secret_key=molekule_authentication_response.get(
                     'credentials').get('SecretKey'),
-                goal_region="us-east-1"
+                goal_region=goal_region
             )
             aws_configuration.raise_for_status()
 
