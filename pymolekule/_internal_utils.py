@@ -4,11 +4,13 @@ pymolekule._internal_utils
 Provides utility functions that are consumed internally by PyMolekule
 """
 
+import re
 import hmac
 import hashlib
-import requests
 from datetime import datetime
 from urllib.parse import urlparse
+
+import requests
 
 
 def make_signature(key, msg):
@@ -21,6 +23,15 @@ def get_signature_key(key, date_stamp, regionName, serviceName):
     kService = make_signature(kRegion, serviceName)
     kSigning = make_signature(kService, 'aws4_request')
     return kSigning
+
+
+def stealth_email(email: str = None):
+    if email:
+        pattern = r"(?!^|.$)[^@]"
+        s = re.search(pattern, email)
+        if s:
+            return re.sub(pattern, '*', email)
+    return None
 
 
 def make_configuration(endpoint: str, security_token: str, aws_access_key_id: str, aws_secret_key: str, goal_region: str, lang: str = 'fr'):

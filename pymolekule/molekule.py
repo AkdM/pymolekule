@@ -1,5 +1,5 @@
 """
-pymolekule.Molekule
+pymolekule.molekule
 ~~~~~~~~~~~~~~
 Main pymolekule Mokekule class that provides essential API work
 with AWS and Molekule servers
@@ -7,11 +7,13 @@ with AWS and Molekule servers
 
 import requests
 import boto3
+from loguru import logger
 from pycognito.aws_srp import AWSSRP
 
-from ._internal_utils import make_configuration, create_access
+from ._internal_utils import make_configuration, create_access, stealth_email
 
 
+@logger.catch
 class Molekule:
 
     def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2') -> None:
@@ -24,9 +26,12 @@ class Molekule:
         self.api_region = None
         self.tokens = {}
 
+        self.stealth_email = stealth_email(self.molekule_username)
+
         pass
 
     def login(self):
+        logger.debug(f'Trying to login with "{self.stealth_email}"')
         try:
             # 1. Retrieve tokens from AWS SRP login
             aws_srp = AWSSRP(username=self.molekule_username,
@@ -71,12 +76,13 @@ class Molekule:
                     'credentials').get('SecretKey'),
                 goal_region="us-east-1"
             )
+            aws_configuration.raise_for_status()
 
             aws_configuration_response = aws_configuration.json()
             # 4. PUT fullAccess to AWS with the informations from step 3.
             self.api_region = aws_configuration_response.get("region")
 
-            create_access(
+            create_access_request = create_access(
                 endpoint=f'https://iot.{self.api_region}.amazonaws.com/principal-policies/fullAccess',
                 security_token=molekule_authentication_response.get(
                     'credentials').get('SessionToken'),
@@ -87,10 +93,12 @@ class Molekule:
                 goal_region=aws_configuration_response.get('region'),
                 amzn_iot=aws_configuration_response.get('identity_pool')
             )
+            create_access_request.raise_for_status()
 
-        except requests.exceptions.RequestException as err:
-            print("Error:", err)
-            return False
+        except Exception as err:
+            raise err
+
+        logger.success(f'Login success')
         return True
 
     def api_endpoint(self, path: str):
@@ -106,47 +114,59 @@ class Molekule:
         }
 
     def list_devices(self):
+        logger.debug('Listing devices…')
         endpoint = self.api_endpoint('/users/me/devices')
-        req = requests.get(endpoint, headers=self.headers())
-        if req.status_code == 200:
-            self.devices = req.json().get('content')
+        try:
+            r = requests.get(endpoint, headers=self.headers())
+            r.raise_for_status()
+            self.devices = r.json().get('content')
 
-            print('Found devices:')
-            for device in self.devices:
-                print('\n######')
-                print(f'name: {device.get("name")}')
-                print(f'model: {device.get("model")}')
-                print(f'fw: {device.get("firmwareVersion")}')
-                print(f'mac: {device.get("macAddress")}')
-                print(f'sn: {device.get("serialNumber")}')
-                print(
-                    f'status: {"online" if device.get("online") else "offline"}')
-        return req
+            if len(self.devices) > 0:
+                print_devices = list(map(
+                    lambda d: f'{d.get("name")} ({d.get("serialNumber")})', self.devices))
+                logger.debug(
+                    f'Found {len(self.devices)} device{"s" if len(self.devices) > 1 else ""}:\n{print_devices}')
+            else:
+                logger.debug('No device found in provided account')
+        except Exception as err:
+            logger.error(err)
+            return None
+        return r.json()
 
     def control_mode(self, device: str, smart: bool = 1, quiet: bool = False, fan_speed: int = None):
         endpoint = ''
         body = {}
 
-        if smart:
-            endpoint = '/actions/enable-smart-mode'
-            body = {
-                'silent': 1 if quiet is True else 0
-            }
-            print(
-                f"Will set to Smart Mode - {'Quiet' if quiet else 'Standard'} mode")
-        elif fan_speed is not None:
-            endpoint = '/actions/set-fan-speed'
-            body = {
-                'fanSpeed': fan_speed
-            }
-            print(
-                f"Will set to Manual Mode - Speed {fan_speed}")
-        else:
-            print("None set")
-            return
+        try:
 
-        endpoint = self.api_endpoint(f'/users/me/devices/{device}{endpoint}')
-        return requests.post(endpoint, headers=self.headers(), json=body)
+            if smart:
+                endpoint = '/actions/enable-smart-mode'
+                body = {
+                    'silent': 1 if quiet is True else 0
+                }
+                logger.debug(
+                    f"Will set to Smart Mode - {'Quiet' if quiet else 'Standard'} mode")
+            elif fan_speed is not None:
+                endpoint = '/actions/set-fan-speed'
+                body = {
+                    'fanSpeed': fan_speed
+                }
+                logger.debug(f"Will set to Manual Mode - Speed {fan_speed}")
+            else:
+                logger.debug(
+                    f"No compatible mode with smart: {smart}; quiet: {quiet}; fan_speed: {fan_speed}")
+                return None
+
+            endpoint = self.api_endpoint(
+                f'/users/me/devices/{device}{endpoint}'
+            )
+            r = requests.post(endpoint, headers=self.headers(), json=body)
+            r.raise_for_status()
+        except Exception as err:
+            logger.err(err)
+            raise err
+
+        return r.json()
 
     def sensor_data(self, device: str):
         # TODO

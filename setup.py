@@ -24,7 +24,8 @@ setuptools.setup(
     install_requires=[
         'requests',
         'boto3',
-        'pycognito'
+        'pycognito',
+        'loguru'
     ],
     packages=setuptools.find_packages(exclude=["test*"]),
     python_requires=">=3.6",
