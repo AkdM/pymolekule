@@ -72,8 +72,6 @@ class Molekule:
             goal_region = extract_region(
                 molekule_authentication_response.get('profile').get('identityId'))
 
-            # print(molekule_authentication_response)
-
             # 3. Make configuration from AWS using execute-api service
             aws_configuration = make_configuration(
                 endpoint='https://config.prod-env.molekule.com/',
