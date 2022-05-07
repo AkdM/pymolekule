@@ -1,7 +1,7 @@
 """
 pymolekule.molekule
 ~~~~~~~~~~~~~~
-Main pymolekule Mokekule class that provides essential API work
+Main pymolekule Molekule class that provides essential API work
 with AWS and Molekule servers
 """
 
