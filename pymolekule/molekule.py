@@ -25,7 +25,7 @@ from ._internal_utils import (
 @logger.catch
 class Molekule:
 
-    def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2', verbose=True) -> None:
+    def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2', verbose=False) -> None:
         severity = "WARNING" if not verbose else "DEBUG"
         logger_configuration = {
             "handlers": [
