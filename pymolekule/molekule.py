@@ -8,6 +8,7 @@ with AWS and Molekule servers
 from typing import Optional
 from datetime import datetime
 
+import sys
 import requests
 import boto3
 from loguru import logger
@@ -24,7 +25,15 @@ from ._internal_utils import (
 @logger.catch
 class Molekule:
 
-    def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2') -> None:
+    def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2', verbose=True) -> None:
+        severity = "WARNING" if not verbose else "DEBUG"
+        logger_configuration = {
+            "handlers": [
+                {"sink": sys.stdout, "level": severity},
+            ]
+        }
+        logger.configure(**logger_configuration)
+
         self.idp_client = boto3.client('cognito-idp')
         self.molekule_username = username
         self.molekule_password = password
@@ -107,6 +116,7 @@ class Molekule:
             create_access_request.raise_for_status()
 
         except Exception as err:
+            logger.error(err)
             raise err
 
         logger.success(f'Login success')
