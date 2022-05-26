@@ -5,10 +5,10 @@ Main pymolekule Molekule class that provides essential API work
 with AWS and Molekule servers
 """
 
+import sys
 from typing import Optional
 from datetime import datetime
 
-import sys
 import requests
 import boto3
 from loguru import logger
@@ -20,6 +20,8 @@ from ._internal_utils import (
     stealth_email,
     extract_region
 )
+from ._account_model import Account
+from ._device_model import Device
 
 
 @logger.catch
@@ -42,7 +44,8 @@ class Molekule:
         self.default_region = default_region
         self.api_region = None
         self.tokens = {}
-        self.devices = None
+        self.devices = []
+        self.account = None
 
         self.stealth_email = stealth_email(self.molekule_username)
 
@@ -78,6 +81,12 @@ class Molekule:
 
             molekule_authentication.raise_for_status()
             molekule_authentication_response = molekule_authentication.json()
+
+            self.account = Account(
+                name=molekule_authentication_response.get(
+                    'profile').get('name'),
+                email=self.molekule_username
+            )
 
             # Save JWT token for further use
             self.tokens['jwt'] = molekule_authentication_response.get(
@@ -140,20 +149,39 @@ class Molekule:
         try:
             r = requests.get(endpoint, headers=self.headers())
             r.raise_for_status()
-            self.devices = r.json().get('content', [])
+            devices = r.json().get('content', [])
 
-            if len(self.devices) > 0:
+            for device in devices:
+                data_device = Device(
+                    name=device.get('name'),
+                    serial_number=device.get('serialNumber'),
+                    firmware=device.get('firmwareVersion'),
+                    model=device.get('model'),
+                    mac_address=device.get('macAddress'),
+                    online=device.get('online'),
+                    mode=device.get('mode'),
+                    fan_speed=int(device.get('fanspeed')),
+                    burst=device.get('burst'),
+                    silent=device.get('silent'),
+                    filter_state=device.get('pecoFilter'),
+                    aqi=device.get('aqi')
+                )
+                self.devices.append(data_device)
+
+            self.account.devices = self.devices
+
+            if len(self.account.devices) > 0:
                 print_devices = list(map(
-                    lambda d: f'{d.get("name")} ({d.get("serialNumber")})', self.devices))
+                    lambda d: f'{d.name} ({d.serial_number})', self.account.devices))
                 logger.debug(
-                    f'Found {len(self.devices)} device{"s" if len(self.devices) > 1 else ""}:\n{print_devices}')
+                    f'Found {len(self.account.devices)} device{"s" if len(self.account.devices) > 1 else ""}:\n{print_devices}')
             else:
-                self.devices = None
+                self.account.devices = None
                 logger.debug('No device found in provided account')
         except Exception as err:
             logger.error(err)
             return None
-        return self.devices
+        return self.account.devices
 
     def control_mode(self, device: str, smart: bool = 1, quiet: bool = False, fan_speed: int = None) -> Optional[dict]:
         endpoint = ''

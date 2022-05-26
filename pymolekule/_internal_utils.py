@@ -163,3 +163,26 @@ def create_access(endpoint: str, security_token: str, aws_access_key_id: str, aw
                'User-Agent': user_agent}
 
     return requests.put(endpoint, headers=headers, json={})
+
+
+# Validation from:
+# https://gist.github.com/EnriqueSoria/c270ff18a4793df12a0b11ba68bae7f6
+class Validation:
+    def __post_init__(self):
+        """
+        Run validation methods if declared.
+        The validation method can be a simple check
+        that raises ValueError or a transformation to
+        the field value.
+        The validation is performed by calling a function named:
+            `validate_<field_name>(self, value, field) -> field.type`
+        Finally, calls (if defined) `validate(self)` for validations that depend on other fields
+        """
+        for name, field in self.__dataclass_fields__.items():
+            validator_name = f"validate_{name}"
+            if method := getattr(self, validator_name, None):
+                new_value = method(getattr(self, name), field=field)
+                setattr(self, name, new_value)
+
+        if (validate := getattr(self, "validate", None)) and callable(validate):
+            validate()
