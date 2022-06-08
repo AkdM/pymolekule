@@ -37,7 +37,7 @@ See [their official website](https://molekule.eu).
 - [loguru](https://github.com/Delgan/loguru)
 
 ## Author
-- **Anthony Da Mota** [[Website](https://twitter.com/pedroermarinho)] / [[Twitter](http://twitter.com/AkdM_/pedroermarinho)] / [[LinkedIn](http://linkedin.com/in/anthonydamota/)]
+- **Anthony Da Mota** [[Website](https://damota.me)] / [[Twitter](http://twitter.com/AkdM_)] / [[LinkedIn](http://linkedin.com/in/anthonydamota/)]
 
 
 ## Contributing
