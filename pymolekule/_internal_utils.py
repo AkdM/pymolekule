@@ -1,6 +1,4 @@
 """
-pymolekule._internal_utils
-~~~~~~~~~~~~~~
 Provides utility functions that are consumed internally by PyMolekule
 """
 

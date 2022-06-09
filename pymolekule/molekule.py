@@ -1,8 +1,5 @@
 """
-pymolekule.molekule
-~~~~~~~~~~~~~~
-Main pymolekule Molekule class that provides essential API work
-with AWS and Molekule servers
+Main pymolekule Molekule class that provides essential API work with AWS and Molekule servers.
 """
 
 import sys
@@ -20,14 +17,26 @@ from ._internal_utils import (
     stealth_email,
     extract_region
 )
-from ._account_model import Account
-from ._device_model import Device
+from .models import Account, Device
 
 
 @logger.catch
 class Molekule:
+    """
+    Molekule
 
-    def __init__(self, username: str, password: str, pool_id: str, client_id: str, default_region: str = 'us-west-2', verbose=False) -> None:
+    Main pymolekule class that provides essential API work with AWS and Molekule servers
+
+    Args:
+        username (str): The email from the provided Molekule account
+        password (str): The password from the provided Molekule account
+        pool_id (str, optional): Pool ID to use for the AWS SRP authentication. Defaults to `'us-west-2_KqrEZKC6r'`
+        client_id (str, optional): Client ID to use for the AWS SRP authentication. Defaults to `'1ec4fa3oriciupg94ugoi84kkk'`
+        default_region (str, optional): Default region to use for the initial AWS cognito requests. Defaults to `'us-west-2'`
+        verbose (bool, optional): Verbose class output (DEBUG severity). Defaults to `False`
+    """
+
+    def __init__(self, username: str, password: str, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', verbose=False) -> None:
         severity = "WARNING" if not verbose else "DEBUG"
         logger_configuration = {
             "handlers": [
