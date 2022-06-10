@@ -1,0 +1,38 @@
+template "mkdocs" {
+  content_directory = "content"
+}
+
+def api_pages = {
+  "Molekule": "pymolekule.molekule",
+  "Models": "pymolekule.models"
+}
+
+action "mkdocs-update-config" {
+  site_name = "PyMolekule"
+  update '$.theme.features' add: ['navigation.top']
+  update '$.theme.palette' add: {'scheme': 'slate', 'primary': 'yellow', 'accent': 'deep orange'}
+  update_with config -> {
+    def items = []
+    print(config)
+    for title, package in api_pages.items():
+      items.append({ title: 'api/{}.md'.format(package) })
+  }
+}
+
+action "preprocess-markdown" {
+  use "pydoc"
+}
+
+do
+  name: "generate-api-pages"
+  closure: {
+    # Make sure that this action runs before the Markdown preprocessors.
+    precedes "preprocess-markdown"
+  }
+  action: {
+    for title, package in api_pages.items():
+      print('title', title)
+      def path = directory / 'content' / 'api' / (package + '.md')
+      path.parent.mkdir(parents=True, exist_ok=True)
+      path.write_text('---\ntitle: {}\n---\n@pydoc {}\n'.format(title, package))
+  }
