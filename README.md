@@ -28,7 +28,7 @@ See [their official website](https://molekule.eu).
 
 ## Documentation
 
-*WIP*, but [here](https://damota.me/PyMolekule/)
+*WIP*, but [here](https://damota.me/pymolekule/)
     
 ## Dependencies
 - [requests](https://github.com/psf/requests)
