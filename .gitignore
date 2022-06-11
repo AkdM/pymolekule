@@ -1,7 +1,7 @@
 .DS_Store
 *.pyc
 tests/
-_docs/_build
+docs/_build
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
