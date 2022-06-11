@@ -5,3 +5,6 @@ docs:
 .PHONY: serve_docs
 serve_docs:
 	novella -d "$(PWD)/docs" -r --serve
+
+publish_docs:
+	git subtree push --prefix documentation origin gh-pages
