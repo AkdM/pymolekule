@@ -4,7 +4,7 @@ template "mkdocs" {
 
 def api_pages = {
   "Molekule": "pymolekule.molekule",
-  "Models": "pymolekule.models"
+  "Models": "pymolekule.models.Device"
 }
 
 action "mkdocs-update-config" {
