@@ -1,6 +1,7 @@
 CONF_DIR="$(PWD)/docs"
-BUILD_DIR="$(PWD)/docs/_build"
-OUT_DIR="$(PWD)/documentation"
+BUILD_DIR="$(PWD)/docs/_generated"
+GIT_DOC="docs/dist"
+OUT_DIR="$(PWD)/$(GIT_DOC)"
 
 .PHONY: docs
 docs: clean
@@ -11,7 +12,7 @@ serve_docs:
 	novella -d $(CONF_DIR) -r --serve
 
 publish_docs:
-	git subtree push --prefix documentation origin gh-pages
+	git subtree push --prefix $(GIT_DOC) origin gh-pages
 
 clean:
 	if [ -d "${BUILD_DIR}" ]; then \
