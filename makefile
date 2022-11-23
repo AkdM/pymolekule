@@ -14,12 +14,13 @@ build_docs:
 	@echo "Building docs…"
 	novella -d $(CONF_DIR) -b $(BUILD_DIR) --site-dir $(OUT_DIR)
 
-publish_docs: docs
+# Will publish from origin
+publish_docs:
 	@echo "Publishing docs…"
 	git subtree push --prefix $(GIT_DOC) origin gh-pages
 
 clean:
 	@echo "Cleaning…"
 	if [ -d "${BUILD_DIR}" ]; then \
-        rm -r ${BUILD_DIR}; \
-    fi \
+		rm -r ${BUILD_DIR}; \
+	fi \
