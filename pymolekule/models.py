@@ -29,7 +29,7 @@ class Device(Validation):
         fan_speed (int): This is the fan speed from the manual mode only, interval:`[1,6]`
         burst (int): Not sure what it is exactly, but values are `[0, 1, 2]`
         aqi (str): Air Quality Index, values are `['good', 'moderate', 'bad', 'very_bad']`
-        filter_state (int): PECO filter state. It's a percentage so the interval us `[0,100]`
+        filter_state (int): PECO filter state. Percentage with the following interval `[0,100]`
     """
 
     name: str
