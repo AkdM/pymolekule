@@ -306,6 +306,19 @@
     Class Molekule
   </a>
   
+    <nav class="md-nav" aria-label="Class Molekule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensor_data" class="md-nav__link">
+    sensor_data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -352,6 +365,19 @@
     Class Molekule
   </a>
   
+    <nav class="md-nav" aria-label="Class Molekule">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sensor_data" class="md-nav__link">
+    sensor_data
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -381,8 +407,8 @@
 <div class="highlight"><pre><span></span><code><span class="nd">@logger</span><span class="o">.</span><span class="n">catch</span>
 <span class="k">class</span> <span class="nc">Molekule</span><span class="p">()</span>
 </code></pre></div>
-<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/molekule.py#L24">[view_source]</a></p>
-<p>Molekule</p>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/molekule.py#L25">[view_source]</a></p>
+<p>Constructor</p>
 <p>Main pymolekule class that provides essential API work with AWS and Molekule servers</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
@@ -393,6 +419,23 @@
 <li><code>default_region</code> <em>str, optional</em> - Default region to use for the initial AWS cognito requests. Defaults to <code>'us-west-2'</code></li>
 <li><code>verbose</code> <em>bool, optional</em> - Verbose class output (DEBUG severity). Defaults to <code>False</code></li>
 </ul>
+<p><a id="pymolekule.molekule.Molekule.sensor_data"></a></p>
+<p><a id="pydoc:pymolekule.molekule.Molekule.sensor_data"></a></p>
+<h4 id="sensor_data">sensor_data</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sensor_data</span><span class="p">(</span><span class="n">device</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">date_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">date_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
+</code></pre></div>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/molekule.py#L249">[view_source]</a></p>
+<p>sensor_data Retrieve historical sensor data from the provided device between two dates</p>
+<p><strong>Arguments</strong>:</p>
+<ul>
+<li><code>device</code> (<code>str, optional</code>): Serial number of the device, defaults to None</li>
+<li><code>date_start</code> (<code>int, optional</code>): <em>description</em>, defaults to None</li>
+<li><code>date_end</code> (<code>int, optional</code>): <em>description</em>, defaults to None</li>
+</ul>
+<p><strong>Returns</strong>:</p>
+<p><code>Optional[dict]</code>: <em>description</em></p>
 
               
             </article>
