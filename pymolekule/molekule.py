@@ -18,12 +18,13 @@ from ._internal_utils import (
     extract_region
 )
 from .models import Account, Device
+from .exceptions import PMAwsSrpAuthError
 
 
 @logger.catch
 class Molekule:
     """
-    Molekule
+    Constructor
 
     Main pymolekule class that provides essential API work with AWS and Molekule servers
 
@@ -64,32 +65,42 @@ class Molekule:
         logger.debug(f'Trying to login with "{self.stealth_email}"')
         try:
             # 1. Retrieve tokens from AWS SRP login
+            logger.debug('Retrieving tokens from AWS SRP login')
             aws_srp = AWSSRP(username=self.molekule_username,
                              password=self.molekule_password,
                              pool_id=self.default_pool_id,
                              client_id=self.app_client_id,
                              client=self.idp_client)
-            _tokens = aws_srp.authenticate_user()
+            try:
+                _tokens = aws_srp.authenticate_user()
+            except Exception as err:
+                raise PMAwsSrpAuthError()
+
             self.tokens['raw'] = _tokens.get('AuthenticationResult')
             self.tokens['access_token'] = self.tokens.get(
                 'raw').get('AccessToken')
             self.tokens['id_token'] = self.tokens.get('raw').get('IdToken')
 
             # 2. Login to Molekule servers using previous retrieved tokens
+            logger.debug(
+                'Login in to Molekule servers using previous retrieved tokens')
             molekule_auth_data = {
                 "access_token": self.tokens.get('access_token'),
                 "id_token": self.tokens.get('id_token'),
                 "provider": f"cognito-idp.{self.default_region}.amazonaws.com/{self.default_pool_id}"
             }
 
-            molekule_authentication = requests.request(
-                method="POST",
-                url='https://auth.prod-env.molekule.com/',
-                json=molekule_auth_data
-            )
+            try:
+                molekule_authentication = requests.request(
+                    method="POST",
+                    url='https://auth.prod-env.molekule.com/',
+                    json=molekule_auth_data
+                )
 
-            molekule_authentication.raise_for_status()
-            molekule_authentication_response = molekule_authentication.json()
+                molekule_authentication.raise_for_status()
+                molekule_authentication_response = molekule_authentication.json()
+            except Exception as err:
+                raise err
 
             self.account = Account(
                 name=molekule_authentication_response.get(
@@ -102,8 +113,11 @@ class Molekule:
                 'openIdToken')
             goal_region = extract_region(
                 molekule_authentication_response.get('profile').get('identityId'))
+            logger.debug('JWT token retrieved')
 
             # 3. Make configuration from AWS using execute-api service
+            logger.debug(
+                'Make configuration from AWS using execute-api service')
             aws_configuration = make_configuration(
                 endpoint='https://config.prod-env.molekule.com/',
                 security_token=molekule_authentication_response.get(
@@ -118,20 +132,25 @@ class Molekule:
 
             aws_configuration_response = aws_configuration.json()
             # 4. PUT fullAccess to AWS with the informations from step 3.
+            logger.debug(
+                'PUT fullAccess to AWS with the informations from previous step')
             self.api_region = aws_configuration_response.get("region")
 
-            create_access_request = create_access(
-                endpoint=f'https://iot.{self.api_region}.amazonaws.com/principal-policies/fullAccess',
-                security_token=molekule_authentication_response.get(
-                    'credentials').get('SessionToken'),
-                aws_access_key_id=molekule_authentication_response.get(
-                    'credentials').get('AccessKeyId'),
-                aws_secret_key=molekule_authentication_response.get(
-                    'credentials').get('SecretKey'),
-                goal_region=aws_configuration_response.get('region'),
-                amzn_iot=aws_configuration_response.get('identity_pool')
-            )
-            create_access_request.raise_for_status()
+            try:
+                create_access_request = create_access(
+                    endpoint=f'https://iot.{self.api_region}.amazonaws.com/principal-policies/fullAccess',
+                    security_token=molekule_authentication_response.get(
+                        'credentials').get('SessionToken'),
+                    aws_access_key_id=molekule_authentication_response.get(
+                        'credentials').get('AccessKeyId'),
+                    aws_secret_key=molekule_authentication_response.get(
+                        'credentials').get('SecretKey'),
+                    goal_region=aws_configuration_response.get('region'),
+                    amzn_iot=aws_configuration_response.get('identity_pool')
+                )
+                create_access_request.raise_for_status()
+            except Exception as err:
+                raise err
 
         except Exception as err:
             logger.error(err)
@@ -228,6 +247,18 @@ class Molekule:
         return r.json()
 
     def sensor_data(self, device: str = None, date_start: int = None, date_end: int = None) -> Optional[dict]:
+        """
+        sensor_data Retrieve historical sensor data from the provided device between two dates
+
+        :param device: Serial number of the device, defaults to None
+        :type device: str, optional
+        :param date_start: _description_, defaults to None
+        :type date_start: int, optional
+        :param date_end: _description_, defaults to None
+        :type date_end: int, optional
+        :return: _description_
+        :rtype: Optional[dict]
+        """
         today = datetime.today()
         min_date = date_start if date_start else int(datetime.combine(
             today, datetime.min.time()).timestamp()*1000)
@@ -248,6 +279,7 @@ class Molekule:
                     endpoint, headers=self.headers(), params=parameters)
 
                 return r.json()
+            # TODO: Handle not providing `device` argument
         except Exception as err:
             logger.error(err)
             return None
