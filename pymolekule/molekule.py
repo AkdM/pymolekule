@@ -39,9 +39,11 @@ class Molekule:
 
     def __init__(self, username: str, password: str, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', verbose=False) -> None:
         severity = "WARNING" if not verbose else "DEBUG"
+        default_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
         logger_configuration = {
             "handlers": [
-                {"sink": sys.stdout, "level": severity},
+                {"sink": sys.stdout, "level": severity,
+                    "format": "{level} - {message}" if not verbose else default_format},
             ]
         }
         logger.configure(**logger_configuration)
