@@ -43,7 +43,7 @@ See [their official website](https://molekule.eu).
 ## Contributing
 Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/AkdM/PyMolekule/issues). I should add a `CONTRIBUTING.md` file too.
 ## Show your support
-Give a ⭐️ if this project helped you! If you're interested in donating, please contact me.
+Give a ⭐️ if this project helped you! If you're interested in donating you can [buy me a hot chocolate right here](https://www.buymeacoffee.com/AkdM)!
 
 ## License
 
