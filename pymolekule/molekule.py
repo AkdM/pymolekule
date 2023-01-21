@@ -29,15 +29,17 @@ class Molekule:
     Main pymolekule class that provides essential API work with AWS and Molekule servers
 
     Args:
-        username (str): The email from the provided Molekule account
-        password (str): The password from the provided Molekule account
+        username (str, optiona): The email from the provided Molekule account. If not provided along with the `password` arg, use both `api_region` and `jwt`. Defaults to `None`
+        password (str, optional): The password from the provided Molekule account. If not provided along with the `username` arg, use both `api_region` and `jwt`. Defaults to `None`
+        api_region (str, optional): Default api_region obtained after a successful login. To be used along `jwt` arg. Defaults to `None`
+        jwt (str, optional): Default jwt obtained after a successful login. Used along `api_region` arg. Defaults to `None`
         pool_id (str, optional): Pool ID to use for the AWS SRP authentication. Defaults to `'us-west-2_KqrEZKC6r'`
         client_id (str, optional): Client ID to use for the AWS SRP authentication. Defaults to `'1ec4fa3oriciupg94ugoi84kkk'`
         default_region (str, optional): Default region to use for the initial AWS cognito requests. Defaults to `'us-west-2'`
         verbose (bool, optional): Verbose class output (DEBUG severity). Defaults to `False`
     """
 
-    def __init__(self, username: str, password: str, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', api_region: str = None, jwt: str = None, verbose: bool = False) -> None:
+    def __init__(self, username: str = None, password: str = None, api_region: str = None, jwt: str = None, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', verbose: bool = False) -> None:
         severity = "WARNING" if not verbose else "DEBUG"
         default_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
         logger_configuration = {
@@ -160,24 +162,22 @@ class Molekule:
         return dict(api_region=self.api_region, jwt=self.tokens["jwt"])
 
     def api_endpoint(self, path: str) -> str:
-        print(self.api_region)
-        print(self.tokens['jwt'])
         return f'https://api.{self.api_region}.prod-env.molekule.com{path}'
 
-    def headers(self) -> dict:
+    def __headers(self) -> dict:
         return {
             'Authorization': self.tokens['jwt'],
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'X-Api-Version': '1.0',
-            'User-Agent': 'Molekule/4.1 (com.molekule.ios; build:1286; iOS 15.4.1) Alamofire/4.1'
+            'User-Agent': 'PyMolekule'
         }
 
     def list_devices(self) -> Optional[list]:
         logger.debug('Listing devices…')
         endpoint = self.api_endpoint('/users/me/devices')
         try:
-            r = requests.get(endpoint, headers=self.headers())
+            r = requests.get(endpoint, headers=self.__headers())
             r.raise_for_status()
             devices = r.json().get('content', [])
 
@@ -240,7 +240,7 @@ class Molekule:
             endpoint = self.api_endpoint(
                 f'/users/me/devices/{device}{endpoint}'
             )
-            r = requests.post(endpoint, headers=self.headers(), json=body)
+            r = requests.post(endpoint, headers=self.__headers(), json=body)
             r.raise_for_status()
         except Exception as err:
             logger.err(err)
@@ -278,7 +278,7 @@ class Molekule:
                 endpoint = self.api_endpoint(
                     f'/users/me/devices/{device}/sensordata')
                 r = requests.get(
-                    endpoint, headers=self.headers(), params=parameters)
+                    endpoint, headers=self.__headers(), params=parameters)
 
                 return r.json()
             # TODO: Handle not providing `device` argument

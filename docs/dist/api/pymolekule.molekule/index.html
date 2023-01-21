@@ -428,8 +428,10 @@
 <p>Main pymolekule class that provides essential API work with AWS and Molekule servers</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>username</code> <em>str</em> - The email from the provided Molekule account</li>
-<li><code>password</code> <em>str</em> - The password from the provided Molekule account</li>
+<li><code>username</code> <em>str, optiona</em> - The email from the provided Molekule account. If not provided along with the <code>password</code> arg, use both <code>api_region</code> and <code>jwt</code>. Defaults to <code>None</code></li>
+<li><code>password</code> <em>str, optional</em> - The password from the provided Molekule account. If not provided along with the <code>username</code> arg, use both <code>api_region</code> and <code>jwt</code>. Defaults to <code>None</code></li>
+<li><code>api_region</code> <em>str, optional</em> - Default api_region obtained after a successful login. To be used along <code>jwt</code> arg. Defaults to <code>None</code></li>
+<li><code>jwt</code> <em>str, optional</em> - Default jwt obtained after a successful login. Used along <code>api_region</code> arg. Defaults to <code>None</code></li>
 <li><code>pool_id</code> <em>str, optional</em> - Pool ID to use for the AWS SRP authentication. Defaults to <code>'us-west-2_KqrEZKC6r'</code></li>
 <li><code>client_id</code> <em>str, optional</em> - Client ID to use for the AWS SRP authentication. Defaults to <code>'1ec4fa3oriciupg94ugoi84kkk'</code></li>
 <li><code>default_region</code> <em>str, optional</em> - Default region to use for the initial AWS cognito requests. Defaults to <code>'us-west-2'</code></li>
@@ -442,7 +444,7 @@
                 <span class="n">date_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                 <span class="n">date_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
 </code></pre></div>
-<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/molekule.py#L249">[view_source]</a></p>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/molekule.py#L251">[view_source]</a></p>
 <p>sensor_data Retrieve historical sensor data from the provided device between two dates</p>
 <p><strong>Arguments</strong>:</p>
 <ul>
