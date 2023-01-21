@@ -37,7 +37,7 @@ class Molekule:
         verbose (bool, optional): Verbose class output (DEBUG severity). Defaults to `False`
     """
 
-    def __init__(self, username: str, password: str, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', verbose=False) -> None:
+    def __init__(self, username: str, password: str, pool_id: str = 'us-west-2_KqrEZKC6r', client_id: str = '1ec4fa3oriciupg94ugoi84kkk', default_region: str = 'us-west-2', api_region: str = None, jwt: str = None, verbose: bool = False) -> None:
         severity = "WARNING" if not verbose else "DEBUG"
         default_format = "<green>{time:YYYY-MM-DD HH:mm:ss.SSS}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>"
         logger_configuration = {
@@ -54,16 +54,16 @@ class Molekule:
         self.default_pool_id = pool_id
         self.app_client_id = client_id
         self.default_region = default_region
-        self.api_region = None
-        self.tokens = {}
+        self.api_region = api_region
+        self.tokens = {"jwt": jwt}
         self.devices = []
-        self.account = None
+        self.account = Account()
 
         self.stealth_email = stealth_email(self.molekule_username)
 
         pass
 
-    def login(self) -> bool:
+    def login(self) -> dict:
         logger.debug(f'Trying to login with "{self.stealth_email}"')
         try:
             # 1. Retrieve tokens from AWS SRP login
@@ -104,11 +104,9 @@ class Molekule:
             except Exception as err:
                 raise err
 
-            self.account = Account(
-                name=molekule_authentication_response.get(
-                    'profile').get('name'),
-                email=self.molekule_username
-            )
+            self.account.name = molekule_authentication_response.get(
+                'profile').get('name')
+            self.account.email = self.molekule_username
 
             # Save JWT token for further use
             self.tokens['jwt'] = molekule_authentication_response.get(
@@ -159,9 +157,11 @@ class Molekule:
             raise err
 
         logger.success(f'Login success')
-        return True
+        return dict(api_region=self.api_region, jwt=self.tokens["jwt"])
 
     def api_endpoint(self, path: str) -> str:
+        print(self.api_region)
+        print(self.tokens['jwt'])
         return f'https://api.{self.api_region}.prod-env.molekule.com{path}'
 
     def headers(self) -> dict:

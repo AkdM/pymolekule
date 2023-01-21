@@ -79,10 +79,10 @@ class Account:
     """Account model
 
     Args:
-        name (str): Account holder name
-        email (str): Email address tied to the provided account
+        name (str, optional): Account holder name
+        email (str, optional): Email address tied to the provided account
         devices (list, optional): List of devices, from the `Device` model
     """
-    name: str
-    email: str
+    name: Optional[str] = ''
+    email: Optional[str] = ''
     devices: Optional[List[Device]] = None
