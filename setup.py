@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pymolekule",
-    version="0.0.1",
+    version="0.0.2",
     author="Anthony Da Mota",
     author_email="anthony@damota.me",
     description="Unofficial Molekule API Python library",
@@ -14,19 +14,21 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/AkdM/PyMolekule",
     project_urls={
-        "Bug Tracker": "https://github.com/AkdM/PyMolekule/issues",
+        "Bug Tracker": "https://github.com/AkdM/PyMolekule/issues"
     },
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
-        "Operating System :: OS Independent",
+        "Operating System :: OS Independent"
     ],
     install_requires=[
         'requests',
         'boto3',
         'pycognito',
-        'loguru'
+        'loguru',
+        'pyjwt',
+        'pydantic'
     ],
     packages=setuptools.find_packages(exclude=["test*"]),
-    python_requires=">=3.6",
+    python_requires=">=3.6"
 )

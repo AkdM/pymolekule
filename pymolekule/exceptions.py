@@ -1,5 +1,5 @@
 """
-Pymolekule exceptions
+PyMolekule exceptions
 """
 
 

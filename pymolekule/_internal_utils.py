@@ -3,24 +3,9 @@ Provides utility functions that are consumed internally by PyMolekule
 """
 
 import re
-import hmac
-import hashlib
-from datetime import datetime
-from urllib.parse import urlparse
-
 import requests
-
-
-def make_signature(key, msg):
-    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
-
-
-def get_signature_key(key, date_stamp, regionName, serviceName):
-    kDate = make_signature(('AWS4' + key).encode('utf-8'), date_stamp)
-    kRegion = make_signature(kDate, regionName)
-    kService = make_signature(kRegion, serviceName)
-    kSigning = make_signature(kService, 'aws4_request')
-    return kSigning
+import jwt
+from loguru import logger
 
 
 def stealth_email(email: str = None):
@@ -31,156 +16,72 @@ def stealth_email(email: str = None):
             return re.sub(pattern, '*', email)
     return None
 
-
-def extract_region(identity_id: str = None):
-    if identity_id:
-        pattern = r"^[^:]+"
-        s = re.search(pattern, identity_id)
-        if s:
-            return s.group(0)
-    return None
+@logger.catch
+class Request:
+    def __init__(self, molekule_instance = None, verbose: bool = False) -> None:
+        self.molekule_instance = molekule_instance
+        self.session = requests.Session()
+        pass
 
 
-def make_configuration(endpoint: str, security_token: str, aws_access_key_id: str, aws_secret_key: str, goal_region: str, lang: str = 'fr'):
-    now = datetime.utcnow()
-    amzdate = now.strftime('%Y%m%dT%H%M%SZ')
-    datestamp = now.strftime('%Y%m%d')
-
-    # ************* TASK 1: CREATE A CANONICAL REQUEST *************
-    # http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-
-    method = 'GET'
-    service = 'execute-api'
-    parsed_endpoint = urlparse(endpoint)
-    host = parsed_endpoint.netloc
-    contentType = 'application/json'
-    request_parameters = f'country={lang}'
-
-    canonical_uri = '/'
-
-    canonical_querystring = request_parameters
-
-    payload_hash = hashlib.sha256(('').encode('utf-8')).hexdigest()
-
-    canonical_headers = 'content-type:' + contentType + '\n' + 'host:' + host + '\n' + 'x-amz-content-sha256:' + \
-        payload_hash + '\n' + 'x-amz-date:' + amzdate + '\n' + \
-        'x-amz-security-token:' + security_token + '\n'
-
-    signed_headers = 'content-type;host;x-amz-content-sha256;x-amz-date;x-amz-security-token'
-
-    canonical_request = method + '\n' + canonical_uri + '\n' + canonical_querystring + \
-        '\n' + canonical_headers + '\n' + signed_headers + '\n' + payload_hash
-
-    # ************* TASK 2: CREATE THE STRING TO SIGN*************
-    algorithm = 'AWS4-HMAC-SHA256'
-    credential_scope = datestamp + '/' + goal_region + \
-        '/' + service + '/' + 'aws4_request'
-    string_to_sign = algorithm + '\n' + amzdate + '\n' + credential_scope + \
-        '\n' + \
-        hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
-
-    # ************* TASK 3: CALCULATE THE SIGNATURE *************
-    # Create the signing key using the function defined above.
-    signing_key = get_signature_key(
-        aws_secret_key, datestamp, goal_region, service)
-
-    # Sign the string_to_sign using the signing_key
-    signature = hmac.new(signing_key, (string_to_sign).encode(
-        'utf-8'), hashlib.sha256).hexdigest()
-
-    # ************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************
-    authorization_header = algorithm + ' ' + 'Credential=' + aws_access_key_id + '/' + \
-        credential_scope + ', ' + 'SignedHeaders=' + \
-        signed_headers + ', ' + 'Signature=' + signature
-
-    headers = {'x-amz-date': amzdate,
-               'Authorization': authorization_header, 'Content-Type': contentType, 'x-amz-security-token': security_token, 'x-amz-content-sha256': payload_hash}
-
-    return requests.get(endpoint + '?' + canonical_querystring, headers=headers)
+    def __headers(self) -> dict:
+        return {
+            'Authorization': self.molekule_instance.tokens['jwt'],
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Api-Version': '1.0',
+            'User-Agent': 'PyMolekule'
+        }
 
 
-def create_access(endpoint: str, security_token: str, aws_access_key_id: str, aws_secret_key: str, goal_region: str, amzn_iot: str):
-    # Create a date for headers and the credential string
-    now = datetime.utcnow()
-    amzdate = now.strftime('%Y%m%dT%H%M%SZ')
-    # Date w/o time, used in credential scope
-    datestamp = now.strftime('%Y%m%d')
+    def api_endpoint(self, path: str) -> str:
+        return f'https://api.molekule.com{path}'
+    
 
-    # ************* TASK 1: CREATE A CANONICAL REQUEST *************
-    # http://docs.aws.amazon.com/general/latest/gr/sigv4-create-canonical-request.html
-
-    method = 'PUT'
-    service = 'execute-api'
-    parsed_endpoint = urlparse(endpoint)
-    host = parsed_endpoint.netloc
-    contentType = 'application/x-amz-json-1.0'
-    user_agent = 'aws-sdk-iOS/2.12.1 iOS/15.4.1 en_FR'
-
-    payload_hash = hashlib.sha256(('{}').encode('utf-8')).hexdigest()
-
-    canonical_headers = 'content-type:' + contentType + '\n' + \
-        'host:' + host + '\n' + \
-        'user-agent:' + user_agent + '\n' + \
-        'x-amz-date:' + amzdate + '\n' + \
-        'x-amz-security-token:' + security_token + '\n' + \
-        'x-amzn-iot-principal:' + amzn_iot + '\n'
-
-    signed_headers = 'content-type;host;user-agent;x-amz-date;x-amz-security-token;x-amzn-iot-principal'
-
-    canonical_request = method + '\n' + parsed_endpoint.path + '\n\n' + \
-        canonical_headers + '\n' + signed_headers + '\n' + payload_hash
-
-    # ************* TASK 2: CREATE THE STRING TO SIGN*************
-    algorithm = 'AWS4-HMAC-SHA256'
-    credential_scope = datestamp + '/' + goal_region + \
-        '/' + service + '/' + 'aws4_request'
-    string_to_sign = algorithm + '\n' + amzdate + '\n' + credential_scope + \
-        '\n' + \
-        hashlib.sha256(canonical_request.encode('utf-8')).hexdigest()
-
-    # ************* TASK 3: CALCULATE THE SIGNATURE *************
-    # Create the signing key using the function defined above.
-    signing_key = get_signature_key(
-        aws_secret_key, datestamp, goal_region, service)
-
-    # Sign the string_to_sign using the signing_key
-    signature = hmac.new(signing_key, (string_to_sign).encode(
-        'utf-8'), hashlib.sha256).hexdigest()
-
-    # ************* TASK 4: ADD SIGNING INFORMATION TO THE REQUEST *************
-    authorization_header = algorithm + ' ' + 'Credential=' + aws_access_key_id + '/' + \
-        credential_scope + ', ' + 'SignedHeaders=' + \
-        signed_headers + ', ' + 'Signature=' + signature
-
-    headers = {'x-amz-date': amzdate,
-               'Authorization': authorization_header,
-               'Content-Type': contentType,
-               'x-amz-security-token': security_token,
-               'x-amz-content-sha256': payload_hash,
-               'x-amzn-iot-principal': amzn_iot,
-               'User-Agent': user_agent}
-
-    return requests.put(endpoint, headers=headers, json={})
+    def check_token(func):
+        def wrapper(self, *args, **kwargs):
+            try:
+                jwt.decode(
+                    self.molekule_instance.tokens['jwt'],
+                    options={"verify_signature": False, "verify_exp": True}
+                )
+            except jwt.ExpiredSignatureError:
+                logger.debug('Token has expired, generating a new one…')
+                self.molekule_instance.login()
 
 
-# Validation from:
-# https://gist.github.com/EnriqueSoria/c270ff18a4793df12a0b11ba68bae7f6
-class Validation:
-    def __post_init__(self):
-        """
-        Run validation methods if declared.
-        The validation method can be a simple check
-        that raises ValueError or a transformation to
-        the field value.
-        The validation is performed by calling a function named:
-            `validate_<field_name>(self, value, field) -> field.type`
-        Finally, calls (if defined) `validate(self)` for validations that depend on other fields
-        """
-        for name, field in self.__dataclass_fields__.items():
-            validator_name = f"validate_{name}"
-            if method := getattr(self, validator_name, None):
-                new_value = method(getattr(self, name), field=field)
-                setattr(self, name, new_value)
+            return func(self, *args, **kwargs)
 
-        if (validate := getattr(self, "validate", None)) and callable(validate):
-            validate()
+        return wrapper
+
+
+    @check_token
+    def get(self, path: str = None, params: dict = None):
+        endpoint = self.api_endpoint(path)
+        return self.session.get(
+            endpoint,
+            headers=self.__headers(),
+            params=params
+        )
+
+
+    @check_token
+    def post(self, path: str = None, json = None, params: dict = None):
+        endpoint = self.api_endpoint(path)
+        r = self.session.post(
+            endpoint,
+            headers=self.__headers(),
+            json=json,
+            params=params
+        )
+        return r
+
+
+    def login(self, json):
+        try:
+            return self.session.post(
+                url='https://auth.prod-env.molekule.com/',
+                json=json
+            )
+        except Exception as err:
+            raise err

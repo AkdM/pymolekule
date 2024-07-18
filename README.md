@@ -2,7 +2,7 @@
 PyMolekule
 <br />
 <img alt="Package state" src="https://img.shields.io/badge/state-alpha-red">
-<img alt="Version" src="https://img.shields.io/badge/version-0.0.1-green">
+<img alt="Version" src="https://img.shields.io/badge/version-0.0.2-green">
 <img alt="Python version" src="https://img.shields.io/badge/python->=3.6-blue">
 <br />
 <img alt="License" src="https://img.shields.io/github/license/AkdM/PyMolekule">
@@ -35,6 +35,8 @@ See [their official website](https://molekule.eu).
 - [boto3](https://github.com/boto/boto3)
 - [pycognito](https://github.com/pvizeli/pycognito)
 - [loguru](https://github.com/Delgan/loguru)
+- [pyjwt](https://github.com/jpadilla/pyjwt)
+- [pydantic](https://github.com/pydantic/pydantic)
 
 ## Author
 - **Anthony Da Mota** [[Website](https://damota.me)] / [[Twitter](http://twitter.com/AkdM_)] / [[LinkedIn](http://linkedin.com/in/anthonydamota/)]
