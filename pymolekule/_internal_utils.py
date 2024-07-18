@@ -8,6 +8,7 @@ import jwt
 from loguru import logger
 
 
+@logger.catch
 def stealth_email(email: str = None):
     if email:
         pattern = r"(?!^|.$)[^@]"
@@ -16,14 +17,16 @@ def stealth_email(email: str = None):
             return re.sub(pattern, '*', email)
     return None
 
-@logger.catch
+
 class Request:
+    @logger.catch
     def __init__(self, molekule_instance = None, verbose: bool = False) -> None:
         self.molekule_instance = molekule_instance
         self.session = requests.Session()
         pass
 
 
+    @logger.catch
     def __headers(self) -> dict:
         return {
             'Authorization': self.molekule_instance.tokens['jwt'],
@@ -34,10 +37,12 @@ class Request:
         }
 
 
+    @logger.catch
     def api_endpoint(self, path: str) -> str:
         return f'https://api.molekule.com{path}'
     
 
+    @logger.catch
     def check_token(func):
         def wrapper(self, *args, **kwargs):
             try:
@@ -55,6 +60,7 @@ class Request:
         return wrapper
 
 
+    @logger.catch
     @check_token
     def get(self, path: str = None, params: dict = None):
         endpoint = self.api_endpoint(path)
@@ -65,6 +71,7 @@ class Request:
         )
 
 
+    @logger.catch
     @check_token
     def post(self, path: str = None, json = None, params: dict = None):
         endpoint = self.api_endpoint(path)
@@ -77,6 +84,7 @@ class Request:
         return r
 
 
+    @logger.catch
     def login(self, json):
         try:
             return self.session.post(

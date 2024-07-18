@@ -17,7 +17,6 @@ from .models import Account, Device
 from .exceptions import PMAwsSrpAuthError
 
 
-@logger.catch
 class Molekule:
     """
     Constructor
@@ -34,6 +33,7 @@ class Molekule:
         verbose (bool, optional): Verbose class output (DEBUG severity). Defaults to `False`
     """
 
+    @logger.catch
     def __init__(
             self,
             username: str = None,
@@ -73,6 +73,7 @@ class Molekule:
         pass
 
 
+    @logger.catch
     def login(self) -> dict:
         logger.info(f'Trying to login with "{self.stealth_email}"')
         try:
@@ -122,6 +123,7 @@ class Molekule:
         return dict(jwt=self.tokens["jwt"])
 
 
+    @logger.catch
     def list_devices(self) -> Optional[list]:
         logger.info('Listing devices…')
         try:
