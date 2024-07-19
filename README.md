@@ -29,7 +29,26 @@ See [their official website](https://molekule.eu).
 ## Documentation
 
 *WIP*, but [here](https://damota.me/pymolekule/)
-    
+
+## Generate Documentation
+
+### To install:
+
+- `pip install setuptools`
+- `pip install mkdocs`
+- `pip install mkdocs-material`
+- `pip install novella`
+- `pip install pydoc-markdown`
+
+### Generate
+
+A makefile is available to do multiple things:
+- .PHONY: using `make` will defaults to `make clean build_docs`
+- `clean`: cleans docs folder
+- `build_docs`: build the docs using mkdocs
+- `serve_docs`: live documentation. Useful when actively working on the documentation!
+- `publish_docs`: publish the docs to the gh-pages branch
+
 ## Dependencies
 - [requests](https://github.com/psf/requests)
 - [boto3](https://github.com/boto/boto3)
