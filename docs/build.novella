@@ -4,7 +4,8 @@ template "mkdocs" {
 
 def api_pages = {
   "Molekule": "pymolekule.molekule",
-  "Models": "pymolekule.models",
+  "Models.Account": "pymolekule.models.account",
+  "Models.Device": "pymolekule.models.device",
   "Exceptions": "pymolekule.exceptions",
 }
 
@@ -32,8 +33,8 @@ do
   }
   action: {
     for title, package in api_pages.items():
-      print('title', title)
-      def path = directory / 'content' / 'api' / (package + '.md')
+      print('Writing:', title)
+      def path = directory / 'content' / 'API' / (package + '.md')
       path.parent.mkdir(parents=True, exist_ok=True)
       path.write_text('---\ntitle: {}\n---\n@pydoc {}\n'.format(title, package))
   }
