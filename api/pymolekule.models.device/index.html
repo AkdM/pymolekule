@@ -9,23 +9,25 @@
       
       
       
+        <link rel="prev" href="../pymolekule.models.account/">
       
-        <link rel="next" href="API/pymolekule.exceptions/">
+      
+        <link rel="next" href="../pymolekule.molekule/">
       
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.29">
     
     
       
-        <title>PyMolekule</title>
+        <title>Models.Device - PyMolekule</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.76a95c52.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.76a95c52.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -44,7 +46,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -68,7 +70,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#welcome-to-the-pymolekule-documentation" class="md-skip">
+        <a href="#class-devicemodel" class="md-skip">
           Skip to content
         </a>
       
@@ -84,7 +86,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="PyMolekule" class="md-header__button md-logo" aria-label="PyMolekule" data-md-component="logo">
+    <a href="../.." title="PyMolekule" class="md-header__button md-logo" aria-label="PyMolekule" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -104,7 +106,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Welcome to the PyMolekule documentation!
+              Models.Device
             
           </span>
         </div>
@@ -191,7 +193,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="PyMolekule" class="md-nav__button md-logo" aria-label="PyMolekule" data-md-component="logo">
+    <a href="../.." title="PyMolekule" class="md-nav__button md-logo" aria-label="PyMolekule" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
@@ -218,30 +220,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Welcome to the PyMolekule documentation!
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -250,149 +232,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#about-molekule" class="md-nav__link">
-    <span class="md-ellipsis">
-      About Molekule
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#about-pymolekule" class="md-nav__link">
-    <span class="md-ellipsis">
-      About PyMolekule
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generate-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Generate Documentation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#to-install" class="md-nav__link">
-    <span class="md-ellipsis">
-      To install:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generate" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependencies
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#author" class="md-nav__link">
-    <span class="md-ellipsis">
-      Author
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#show-your-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show your support
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -401,8 +240,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -422,11 +263,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -440,7 +281,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             API
@@ -454,7 +295,7 @@
   
   
     <li class="md-nav__item">
-      <a href="API/pymolekule.exceptions/" class="md-nav__link">
+      <a href="../pymolekule.exceptions/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -475,7 +316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="API/pymolekule.models.account/" class="md-nav__link">
+      <a href="../pymolekule.models.account/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -493,10 +334,28 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="API/pymolekule.models.device/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Models.Device
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -505,6 +364,66 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#class-devicemodel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class DeviceModel
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#class-device" class="md-nav__link">
+    <span class="md-ellipsis">
+      Class Device
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Class Device">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#control" class="md-nav__link">
+    <span class="md-ellipsis">
+      control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sensor_history" class="md-nav__link">
+    <span class="md-ellipsis">
+      sensor_history
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -517,7 +436,7 @@
   
   
     <li class="md-nav__item">
-      <a href="API/pymolekule.molekule/" class="md-nav__link">
+      <a href="../pymolekule.molekule/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -555,8 +474,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -565,73 +482,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#about-molekule" class="md-nav__link">
+  <a href="#class-devicemodel" class="md-nav__link">
     <span class="md-ellipsis">
-      About Molekule
+      Class DeviceModel
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#about-pymolekule" class="md-nav__link">
+  <a href="#class-device" class="md-nav__link">
     <span class="md-ellipsis">
-      About PyMolekule
+      Class Device
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Installation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    <span class="md-ellipsis">
-      Usage
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generate-documentation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generate Documentation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Generate Documentation">
+    <nav class="md-nav" aria-label="Class Device">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#to-install" class="md-nav__link">
+  <a href="#control" class="md-nav__link">
     <span class="md-ellipsis">
-      To install:
+      control
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#generate" class="md-nav__link">
+  <a href="#sensor_history" class="md-nav__link">
     <span class="md-ellipsis">
-      Generate
+      sensor_history
     </span>
   </a>
   
@@ -639,51 +520,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependencies" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependencies
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#author" class="md-nav__link">
-    <span class="md-ellipsis">
-      Author
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributing" class="md-nav__link">
-    <span class="md-ellipsis">
-      Contributing
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#show-your-support" class="md-nav__link">
-    <span class="md-ellipsis">
-      Show your support
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#license" class="md-nav__link">
-    <span class="md-ellipsis">
-      License
-    </span>
-  </a>
   
 </li>
       
@@ -705,66 +541,79 @@
   
 
 
-<h1 id="welcome-to-the-pymolekule-documentation">Welcome to the PyMolekule documentation!</h1>
-<p><br />
-<img alt="Package state" src="https://img.shields.io/badge/state-alpha-red">
-<img alt="Version" src="https://img.shields.io/badge/version-0.0.2-green">
-<img alt="Python version" src="https://img.shields.io/badge/python->=3.6-blue"&gt;
-<br />
-<img alt="License" src="https://img.shields.io/github/license/AkdM/PyMolekule">
-<img alt="Github issues" src="https://img.shields.io/github/issues/AkdM/PyMolekule">
-</h1></p>
-<h2 id="about-molekule">About Molekule</h2>
-<p>See <a href="https://molekule.eu">their official website</a>.</p>
-<h2 id="about-pymolekule">About PyMolekule</h2>
-<p><strong>PyMolekule</strong> is a simple wrapper around the Molekule API, so that it is easy to connect, view and control your Molekule air purifier.</p>
-<h2 id="installation">Installation</h2>
-<p><em>TODO</em></p>
-<h2 id="usage">Usage</h2>
-<p><em>TODO</em></p>
-<h2 id="documentation">Documentation</h2>
-<p><em>WIP</em>, but <a href="https://damota.me/pymolekule/">here</a></p>
-<h2 id="generate-documentation">Generate Documentation</h2>
-<h3 id="to-install">To install:</h3>
+  <h1>Models.Device</h1>
+
+<p>Device model</p>
+<p><a id="pymolekule.models.device.DeviceModel"></a></p>
+<p><a id="pydoc:pymolekule.models.device.DeviceModel"></a></p>
+<h2 id="class-devicemodel">Class DeviceModel</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">DeviceModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/models/device.py#L11">[view_source]</a></p>
+<p>Device model</p>
+<p>A device can be found in an account, see the <code>AccountModel</code> model</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li><code>pip install setuptools</code></li>
-<li><code>pip install mkdocs</code></li>
-<li><code>pip install mkdocs-material</code></li>
-<li><code>pip install novella</code></li>
-<li><code>pip install pydoc-markdown</code></li>
+<li><code>name</code> <em>str</em> - Name of the Molekule device</li>
+<li><code>serial_number</code> <em>str</em> - Serial number of the Molekule device</li>
+<li><code>firmware</code> <em>str</em> - Firmware number of the Molekule device</li>
+<li><code>model</code> <em>str</em> - Model of the Molekule device</li>
+<li><code>mac_address</code> <em>str</em> - MAC address of the Molekule device</li>
+<li><code>online</code> <em>bool</em> - Online status of the Molekule device</li>
+<li><code>mode</code> <em>str</em> - Protect mode of the Molekule device. Can be <code>smart</code> (which is Auto Protect in the app) or <code>manual</code></li>
+<li><code>silent</code> <em>str, optional</em> - Quiet mode in the app, which can be found under Auto Protect &gt; Quiet</li>
+<li><code>fan_speed</code> <em>int</em> - This is the fan speed from the manual mode only, interval:<code>[1,6]</code></li>
+<li><code>burst</code> <em>int</em> - Not sure what it is exactly, but values are <code>[0, 1, 2]</code></li>
+<li><code>aqi</code> <em>str</em> - Air Quality Index, values are <code>['good', 'moderate', 'bad', 'very_bad']</code></li>
+<li><code>filter_state</code> <em>int</em> - PECO filter state. Percentage with the following interval <code>[0,100]</code></li>
 </ul>
-<h3 id="generate">Generate</h3>
-<p>A makefile is available to do multiple things:
-- .PHONY: using <code>make</code> will defaults to <code>make clean build_docs</code>
-- <code>clean</code>: cleans docs folder
-- <code>build_docs</code>: build the docs using mkdocs
-- <code>serve_docs</code>: live documentation. Useful when actively working on the documentation!
-- <code>publish_docs</code>: publish the docs to the gh-pages branch</p>
-<h2 id="dependencies">Dependencies</h2>
+<p><a id="pymolekule.models.device.Device"></a></p>
+<p><a id="pydoc:pymolekule.models.device.Device"></a></p>
+<h2 id="class-device">Class Device</h2>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">Device</span><span class="p">(</span><span class="n">DeviceModel</span><span class="p">)</span>
+</code></pre></div>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/models/device.py#L45">[view_source]</a></p>
+<p><a id="pymolekule.models.device.Device.control"></a></p>
+<p><a id="pydoc:pymolekule.models.device.Device.control"></a></p>
+<h4 id="control">control</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">control</span><span class="p">(</span><span class="n">smart</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">quiet</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">fan_speed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
+</code></pre></div>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/models/device.py#L53">[view_source]</a></p>
+<p>control Control device state</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li><a href="https://github.com/psf/requests">requests</a></li>
-<li><a href="https://github.com/boto/boto3">boto3</a></li>
-<li><a href="https://github.com/pvizeli/pycognito">pycognito</a></li>
-<li><a href="https://github.com/Delgan/loguru">loguru</a></li>
-<li><a href="https://github.com/jpadilla/pyjwt">pyjwt</a></li>
-<li><a href="https://github.com/pydantic/pydantic">pydantic</a></li>
+<li><code>smart</code> (<code>bool, optional</code>): <em>description</em>, defaults to 1</li>
+<li><code>quiet</code> (<code>bool, optional</code>): <em>description</em>, defaults to False</li>
+<li><code>fan_speed</code> (<code>int, optional</code>): <em>description</em>, defaults to None</li>
 </ul>
-<h2 id="author">Author</h2>
+<p><strong>Returns</strong>:</p>
+<p><code>Optional[dict]</code>: <em>description</em></p>
+<p><a id="pymolekule.models.device.Device.sensor_history"></a></p>
+<p><a id="pydoc:pymolekule.models.device.Device.sensor_history"></a></p>
+<h4 id="sensor_history">sensor_history</h4>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">sensor_history</span><span class="p">(</span><span class="n">date_start</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                   <span class="n">date_end</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
+</code></pre></div>
+<p><a href="https://github.com/AkdM/PyMolekule/blob/main/docs/../pymolekule/models/device.py#L98">[view_source]</a></p>
+<p>sensor_data Retrieve historical sensor data from the provided device between two dates</p>
+<p><strong>Arguments</strong>:</p>
 <ul>
-<li><strong>Anthony Da Mota</strong> [<a href="https://damota.me">Website</a>] / [<a href="http://twitter.com/AkdM_">Twitter</a>] / [<a href="http://linkedin.com/in/anthonydamota/">LinkedIn</a>]</li>
+<li><code>date_start</code> (<code>int, optional</code>): <em>description</em>, defaults to None</li>
+<li><code>date_end</code> (<code>int, optional</code>): <em>description</em>, defaults to None</li>
 </ul>
-<h2 id="contributing">Contributing</h2>
-<p>Contributions, issues and feature requests are welcome!<br />Feel free to check <a href="https://github.com/AkdM/PyMolekule/issues">issues page</a>. I should add a <code>CONTRIBUTING.md</code> file too.</p>
-<h2 id="show-your-support">Show your support</h2>
-<p>Give a ⭐️ if this project helped you! If you're interested in donating you can <a href="https://www.buymeacoffee.com/AkdM">buy me a hot chocolate right here</a>!</p>
-<h2 id="license">License</h2>
-<p>This open source project is <a href="https://github.com/AkdM/PyMolekule/blob/main/LICENSE">GNU Affero General Public License v3.0</a> licensed.</p>
+<p><strong>Returns</strong>:</p>
+<p><code>Optional[dict]</code>: <em>description</em></p>
 
 
 
 
 
 
+
+  
+  
 
 
 
@@ -811,10 +660,10 @@
     </div>
     
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tracking", "navigation.top", "toc.follow", "navigation.top"], "search": "assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.indexes", "navigation.instant", "navigation.sections", "navigation.tracking", "navigation.top", "toc.follow", "navigation.top"], "search": "../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
     
   </body>
