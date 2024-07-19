@@ -34,7 +34,7 @@ do
   action: {
     for title, package in api_pages.items():
       print('Writing:', title)
-      def path = directory / 'content' / 'API' / (package + '.md')
+      def path = directory / 'content' / 'api' / (package + '.md')
       path.parent.mkdir(parents=True, exist_ok=True)
       path.write_text('---\ntitle: {}\n---\n@pydoc {}\n'.format(title, package))
   }
