@@ -12,7 +12,7 @@ PyMolekule
 
 ## About Molekule
 
-See [their official website](https://molekule.eu).
+See [their official website](https://molekule.com).
 
 ## About PyMolekule
 
